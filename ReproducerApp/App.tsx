@@ -1,118 +1,230 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  AppRegistry,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  processColor,
+  LayoutAnimation,
 } from 'react-native';
+import update from 'immutability-helper';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { LineChart } from 'react-native-charts-wrapper';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const greenBlue = 'rgb(26, 182, 151)';
+const petrel = 'rgb(59, 145, 153)';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+class LineChartScreen extends React.Component {
+  constructor() {
+    super();
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    this.state = {};
+  }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  handleSelect(event) {
+    let entry = event.nativeEvent;
+    if (entry == null) {
+      this.setState({ ...this.state, selectedEntry: null });
+    } else {
+      this.setState({ ...this.state, selectedEntry: JSON.stringify(entry) });
+    }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    console.log(event.nativeEvent);
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={{ height: 80 }}>
+          <Text> selected entry</Text>
+          <Text> {this.state.selectedEntry}</Text>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+
+        <View style={styles.container}>
+          <LineChart
+            style={styles.chart}
+            data={{
+              dataSets: [
+                {
+                  values: [
+                    {
+                      y: 65,
+                      x: 0,
+                      marker: '65 kg',
+                    },
+                    {
+                      y: 77,
+                      x: 1,
+                      marker: '77 kg',
+                    },
+                    {
+                      y: 76,
+                      x: 2,
+                      marker: '76 kg',
+                    },
+                    {
+                      y: 74,
+                      x: 3,
+                      marker: '74 kg',
+                    },
+                    {
+                      y: 76,
+                      x: 4,
+                      marker: '76 kg',
+                    },
+                    {
+                      y: 65,
+                      x: 5,
+                      marker: 'Today: 65 kg',
+                    },
+                  ],
+                  label: '',
+                  config: {
+                    mode: 'CUBIC_BEZIER',
+                    drawValues: false,
+                    lineWidth: 2,
+                    drawCircles: true,
+                    circleColor: processColor(petrel),
+                    drawCircleHole: false,
+                    circleRadius: 5,
+                    highlightColor: processColor('transparent'),
+                    color: processColor(petrel),
+                    drawFilled: true,
+                    fillGradient: {
+                      colors: [processColor(petrel), processColor(greenBlue)],
+                      positions: [0, 0.5],
+                      angle: 90,
+                      orientation: 'TOP_BOTTOM',
+                    },
+                    fillAlpha: 1000,
+                    valueTextSize: 15,
+                  },
+                },
+
+                {
+                  values: [
+                    {
+                      y: 35,
+                      x: 0,
+                      marker: '35 kg',
+                    },
+                    {
+                      y: 47,
+                      x: 1,
+                      marker: '47 kg',
+                    },
+                    {
+                      y: 46,
+                      x: 2,
+                      marker: '46 kg',
+                    },
+                    {
+                      y: 44,
+                      x: 3,
+                      marker: '44 kg',
+                    },
+                    {
+                      y: 46,
+                      x: 4,
+                      marker: '46 kg',
+                    },
+                    {
+                      y: 35,
+                      x: 5,
+                      marker: 'Today: 35 kg',
+                    },
+                  ],
+                  label: '',
+                  config: {
+                    mode: 'CUBIC_BEZIER',
+                    drawValues: false,
+                    lineWidth: 2,
+                    drawCircles: true,
+                    circleColor: processColor(petrel),
+                    drawCircleHole: false,
+                    circleRadius: 5,
+                    highlightColor: processColor('transparent'),
+                    color: processColor(petrel),
+                    drawFilled: true,
+                    fillGradient: {
+                      colors: [processColor('red'), processColor('yellow')],
+                      positions: [0, 0.5],
+                      angle: 90,
+                      orientation: 'TOP_BOTTOM',
+                    },
+                    fillAlpha: 1000,
+                    valueTextSize: 15,
+                  },
+                },
+              ],
+            }}
+            chartDescription={{ text: '' }}
+            legend={{
+              enabled: false,
+            }}
+            marker={{
+              enabled: true,
+              markerColor: processColor('white'),
+              textColor: processColor('black'),
+            }}
+            xAxis={{
+              enabled: true,
+              granularity: 1,
+              drawLabels: true,
+              position: 'BOTTOM',
+              drawAxisLine: true,
+              drawGridLines: false,
+              fontFamily: 'HelveticaNeue-Medium',
+              fontWeight: 'bold',
+              textSize: 12,
+              textColor: processColor('gray'),
+              valueFormatter: ['M', 'T', 'W', 'T', 'F', 'S'],
+            }}
+            yAxis={{
+              left: {
+                enabled: false,
+              },
+              right: {
+                enabled: false,
+              },
+            }}
+            autoScaleMinMaxEnabled={true}
+            animation={{
+              durationX: 0,
+              durationY: 1500,
+              easingY: 'EaseInOutQuart',
+            }}
+            drawGridBackground={false}
+            drawBorders={false}
+            touchEnabled={true}
+            dragEnabled={false}
+            scaleEnabled={false}
+            scaleXEnabled={false}
+            scaleYEnabled={false}
+            pinchZoom={false}
+            doubleTapToZoomEnabled={false}
+            dragDecelerationEnabled={true}
+            dragDecelerationFrictionCoef={0.99}
+            keepPositionOnRotation={false}
+            onSelect={this.handleSelect.bind(this)}
+            onChange={event => console.log(event.nativeEvent)}
+          />
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#F5FCFF',
+    padding: 20,
+    justifyContent: 'center'
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  chart: {
+    height: 250,
   },
 });
 
-export default App;
+export default LineChartScreen;
